@@ -33,7 +33,7 @@ except ImportError:
     from distutils.command.build_py import build_py
 
 try:
-    from setuptools import setup, find_packages
+    from setuptools import setup, find_packages, Extension
 except ImportError:
     from ez_setup import use_setuptools
     use_setuptools()
@@ -43,6 +43,50 @@ def read(*rnames):
     return codecs.open(os.path.join(*rnames), encoding='utf-8').read()
 
 long_description = '\n' + read('README.txt') + '\n'# + read('CHANGELOG.txt')
+
+
+try:
+    from Cython.Distutils import build_ext
+    CYTHON = True
+except ImportError:
+    print('\nWARNING: Cython not installed. '
+          'Falcon will still work fine, but may run '
+          'a bit slower.\n')
+    CYTHON = False
+
+if CYTHON:
+    from os import path
+    MYDIR = path.abspath(os.path.dirname(__file__)) + '/src'
+    def list_modules(dirname):
+        filenames = glob.glob(path.join(dirname, '*.py'))
+
+        module_names = []
+        for name in filenames:
+            module, ext = path.splitext(path.basename(name))
+            if module != '__init__':
+                module_names.append(module)
+
+        print module_names
+        return module_names
+
+    """
+    ext_modules = [
+        Extension('cssutils.css.' + ext, [path.join('src','cssutils','css' , ext + '.py')])
+        for ext in list_modules(path.join(MYDIR, 'cssutils', 'css'))]
+
+    ext_modules += [
+        Extension('cssutils.stylesheets.' + ext,
+                  [path.join('src','cssutils', 'stylesheets', ext + '.py')])
+
+        for ext in list_modules(path.join(MYDIR, 'cssutils', 'stylesheets'))]
+    """
+    ext_modules = [
+        Extension('cssutils.css.value', [path.join('src','cssutils','css' ,  'value.py')])]
+
+    cmdclass = {'build_ext': build_ext}
+else:
+    cmdclass = {'build_py': build_py}
+    ext_modules = []
 
 setup(
     name='cssutils',
@@ -67,10 +111,8 @@ setup(
     license='LGPL 2.1 or later, see also http://cthedot.de/cssutils/',
     keywords='CSS, Cascading Style Sheets, CSSParser, DOM Level 2 Stylesheets, DOM Level 2 CSS',
     platforms='Python 2.5 and later. Python 3.2 and later. Jython 2.5.1 and later.',
-    cmdclass=dict(
-        # specify the build_py command imported earlier
-        build_py=build_py,
-    ),
+    cmdclass=cmdclass,
+    ext_modules=ext_modules,
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
