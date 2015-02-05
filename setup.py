@@ -49,27 +49,23 @@ try:
     from Cython.Distutils import build_ext
     CYTHON = True
 except ImportError:
-    print('\nWARNING: Cython not installed. '
-          'Falcon will still work fine, but may run '
-          'a bit slower.\n')
     CYTHON = False
 
 if CYTHON:
     from os import path
+    import glob
     MYDIR = path.abspath(os.path.dirname(__file__)) + '/src'
     def list_modules(dirname):
         filenames = glob.glob(path.join(dirname, '*.py'))
-
         module_names = []
         for name in filenames:
             module, ext = path.splitext(path.basename(name))
             if module != '__init__':
                 module_names.append(module)
 
-        print module_names
         return module_names
 
-    """
+    
     ext_modules = [
         Extension('cssutils.css.' + ext, [path.join('src','cssutils','css' , ext + '.py')])
         for ext in list_modules(path.join(MYDIR, 'cssutils', 'css'))]
@@ -79,10 +75,13 @@ if CYTHON:
                   [path.join('src','cssutils', 'stylesheets', ext + '.py')])
 
         for ext in list_modules(path.join(MYDIR, 'cssutils', 'stylesheets'))]
-    """
-    ext_modules = [
-        Extension('cssutils.css.value', [path.join('src','cssutils','css' ,  'value.py')])]
 
+    ext_modules += [
+        Extension('cssutils.' + ext,
+                  [path.join('src','cssutils', ext + '.py')])
+
+        for ext in list_modules(path.join(MYDIR, 'cssutils')) if ext not in ['prodparser', 'util']]
+        
     cmdclass = {'build_ext': build_ext}
 else:
     cmdclass = {'build_py': build_py}
