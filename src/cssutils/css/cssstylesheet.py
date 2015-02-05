@@ -41,7 +41,7 @@ class CSSStyleSheet(cssutils.stylesheets.StyleSheet):
         """
         super(CSSStyleSheet, self).__init__(
                 'text/css', href, media, title, disabled,
-                ownerNode, parentStyleSheet, 
+                ownerNode, parentStyleSheet,
                 validating=validating)
 
         self._ownerRule = ownerRule
@@ -245,7 +245,7 @@ class CSSStyleSheet(cssutils.stylesheets.StyleSheet):
             if rule.wellformed:
                 self.insertRule(rule)
             return 3
-        
+
         def unknownrule(expected, seq, token, tokenizer):
             # parse and consume tokens in any case
             if token[1] in cssutils.css.MarginRule.margins:
@@ -258,7 +258,7 @@ class CSSStyleSheet(cssutils.stylesheets.StyleSheet):
                                token, neverraise=True)
                 rule = cssutils.css.CSSUnknownRule(parentStyleSheet=self)
                 rule.cssText = self._tokensupto2(tokenizer, token)
-                
+
             if rule.wellformed:
                 self.insertRule(rule)
 
@@ -463,7 +463,7 @@ class CSSStyleSheet(cssutils.stylesheets.StyleSheet):
                     break
             else:
                 raise xml.dom.IndexSizeErr(u"CSSStyleSheet: Not a rule in"
-                                           " this sheets'a cssRules list: %s"
+                                           u" this sheets'a cssRules list: %s"
                                            % index)
 
         try:
@@ -592,7 +592,7 @@ class CSSStyleSheet(cssutils.stylesheets.StyleSheet):
                               self._cssRules[0].type == rule.CHARSET_RULE):
                 self._log.error(
                     u'CSSStylesheet: @charset only allowed once at the'
-                    ' beginning of a stylesheet.',
+                    u' beginning of a stylesheet.',
                     error=xml.dom.HierarchyRequestErr)
                 return
             else:
@@ -645,8 +645,8 @@ class CSSStyleSheet(cssutils.stylesheets.StyleSheet):
                                   r.FONT_FACE_RULE):
                         self._log.error(
                             u'CSSStylesheet: Cannot insert @import here,'
-                             ' found @namespace, @variables, @media, @page or'
-                             ' CSSStyleRule before index %s.' %
+                            u' found @namespace, @variables, @media, @page or'
+                            u' CSSStyleRule before index %s.' %
                             index,
                             error=xml.dom.HierarchyRequestErr)
                         return
@@ -677,7 +677,7 @@ class CSSStyleSheet(cssutils.stylesheets.StyleSheet):
                     if r.type in (r.CHARSET_RULE, r.IMPORT_RULE):
                         self._log.error(
                             u'CSSStylesheet: Cannot insert @namespace here,'
-                            ' found @charset or @import after index %s.' %
+                            u' found @charset or @import after index %s.' %
                             index,
                             error=xml.dom.HierarchyRequestErr)
                         return
@@ -690,8 +690,8 @@ class CSSStyleSheet(cssutils.stylesheets.StyleSheet):
                                   r.FONT_FACE_RULE):
                         self._log.error(
                             u'CSSStylesheet: Cannot insert @namespace here,'
-                            ' found @variables, @media, @page or CSSStyleRule'
-                            ' before index %s.' %
+                            u' found @variables, @media, @page or CSSStyleRule'
+                            u' before index %s.' %
                             index,
                             error=xml.dom.HierarchyRequestErr)
                         return
@@ -732,8 +732,8 @@ class CSSStyleSheet(cssutils.stylesheets.StyleSheet):
                                   r.NAMESPACE_RULE):
                         self._log.error(
                             u'CSSStylesheet: Cannot insert @variables here,'
-                            ' found @charset, @import or @namespace after'
-                            ' index %s.' %
+                            u' found @charset, @import or @namespace after'
+                            u' index %s.' %
                             index,
                             error=xml.dom.HierarchyRequestErr)
                         return
@@ -745,8 +745,8 @@ class CSSStyleSheet(cssutils.stylesheets.StyleSheet):
                                   r.FONT_FACE_RULE):
                         self._log.error(
                             u'CSSStylesheet: Cannot insert @variables here,'
-                            ' found @media, @page or CSSStyleRule'
-                            ' before index %s.' %
+                            u' found @media, @page or CSSStyleRule'
+                            u' before index %s.' %
                             index,
                             error=xml.dom.HierarchyRequestErr)
                         return

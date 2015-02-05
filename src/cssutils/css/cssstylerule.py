@@ -169,7 +169,7 @@ class CSSStyleRule(cssrule.CSSRule):
                            doc=u"If this Rule is attached to a CSSStyleSheet "
                                u"the namespaces of that sheet are mirrored "
                                u"here. While the Rule is not attached the "
-                               u"namespaces of selectorList are used.""")
+                               u"namespaces of selectorList are used.")
 
     def _setSelectorList(self, selectorList):
         """
@@ -229,6 +229,6 @@ class CSSStyleRule(cssrule.CSSRule):
 
     type = property(lambda self: self.STYLE_RULE,
                     doc=u"The type of this rule, as defined by a CSSRule "
-                        "type constant.")
+                        u"type constant.")
 
     wellformed = property(lambda self: self.selectorList.wellformed)
