@@ -13,9 +13,11 @@ import tokenize2
 import urllib
 
 from cssutils import css
+from cache import class_method_cache
 
 if sys.version_info < (2,6):
     bytes = str
+
 
 class CSSParser(object):
     """Parse a CSS StyleSheet from URL, string or file and return a DOM Level 2
@@ -100,6 +102,7 @@ class CSSParser(object):
         self.__parseSetting(False)
         return style
 
+    @class_method_cache()
     def parseString(self, cssText, encoding=None, href=None, media=None,
                     title=None,
                     validate=None):
